@@ -21,7 +21,27 @@ struct transaction {
 	char date[11];
 	char description[20];
 };
-
+int comp_dates(char *date1, char* date2){
+	int i = 0;
+	while (date1[i++] != '\0')
+	if (date1[i] != date2[i])
+		return 0;
+	return 1;
+}
 struct transaction * sortedArraysCommonElements(struct transaction *A, int ALen, struct transaction *B, int BLen) {
-	return NULL;
+	if (A==NULL||B==NULL)
+		return NULL;
+	struct transaction * commonEles = (struct transaction *)malloc(sizeof(struct transaction)*((ALen<BLen)?ALen:BLen));
+	int comTren = 0;
+	for (int TranA = 0; TranA < ALen; TranA++){
+		for (int TranB = 0; TranB < BLen; TranB++){
+			if (comp_dates(A[TranA].date, B[TranB].date)==1){
+				commonEles[comTren] = A[TranA];
+				comTren++;
+			}
+		}
+	}
+	if (comTren == 0)
+		return NULL;
+	return commonEles;
 }
