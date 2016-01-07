@@ -21,6 +21,51 @@ struct transaction {
 	char description[20];
 };
 
+int com_dates(char *date1, char* date2){
+	int yy1 = ((date1[6] - '0') * 1000 + (date1[7] - '0') * 100 + (date1[8] - '0') * 10 + (date1[9] - '0'));
+	int yy2 = ((date2[6] - '0') * 1000 + (date2[7] - '0') * 100 + (date2[8] - '0') * 10 + (date2[9] - '0'));
+	return yy1 - yy2;
+}
+
 struct transaction * mergeSortedArrays(struct transaction *A, int ALen, struct transaction *B, int BLen) {
-	return NULL;
+	if (A==NULL||B==NULL)
+		return NULL;
+	struct transaction * mergeTrans = (struct transaction *)malloc(sizeof(struct transaction)*(ALen + BLen));
+	int currA = 0, currB = 0,currRes=0;
+	while (currA<ALen&&currB<BLen)
+	{
+		int cmp=com_dates(A[currA].date, B[currB].date);
+		if (cmp<0){
+			mergeTrans[currRes] = A[currA];
+			currA++;
+			currRes++;
+		}
+		else if (cmp>0){
+			mergeTrans[currRes] = B[currB];
+			currB++;
+			currRes++;
+		}
+		else
+		{
+			mergeTrans[currRes] = A[currA];
+			currA++;
+			currRes++;
+			mergeTrans[currRes] = B[currB];
+			currB++;
+			currRes++;
+		}
+	}
+	while (currA < ALen)
+	{
+		mergeTrans[currRes] = A[currA];
+		currA++;
+		currRes++;
+	}
+	while (currB<BLen)
+	{
+		mergeTrans[currRes] = B[currB];
+		currB++;
+		currRes++;
+	}
+	return mergeTrans;
 }
