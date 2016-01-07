@@ -19,7 +19,23 @@ struct transaction {
 	char date[11];
 	char description[20];
 };
-
+int compare_dates(char *date1, char* date2){
+	int i = 0;
+	while (date1[i++] != '\0')
+		if (date1[i] != date2[i])
+			return 0;
+	return 1;
+}
 int countGreaterNumbers(struct transaction *Arr, int len, char *date) {
-	return -1;
+	int currTrans = 0, count = 0,flag=0;
+	for (currTrans = 0; currTrans < len; currTrans++){
+		int cmpdate = compare_dates(Arr[currTrans].date, date);
+		if (cmpdate==1){
+			flag = 1;
+			continue;
+		}
+		if (cmpdate==0 && flag == 1)
+			count++;
+	}
+	return count;
 }
